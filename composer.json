@@ -1,0 +1,24 @@
+{
+  "name": "desafio/produto",
+  "autoload": {
+    "psr-4": {
+      "Desafio\\Produto\\": "src/",
+      "DataBase\\": "database/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "psr/http-message": "^1.0",
+    "nyholm/psr7": "^1.5",
+    "nyholm/psr7-server": "^1.0",
+    "psr/http-server-handler": "^1.0",
+    "php-di/php-di": "^6.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  }
+}
