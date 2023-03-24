@@ -33,8 +33,8 @@ class ProductService implements ProductServiceInterface
   public function deleteProduct(int $code): void
   {
     try {
-      if (empty($this->repository->findProductByCode($code))) {
-        throw new Exception('');
+      if (empty($this->repository->findProduct($code))) {
+        throw new NotFoundCategoryException();
       }
       $this->repository->deleteProduct($code);
       return;
@@ -54,10 +54,10 @@ class ProductService implements ProductServiceInterface
   public function findProduct(int $code): Product
   {
     try {
-      if (empty($this->repository->findProductByCode($code))) {
+      if (empty($this->repository->findProduct($code))) {
         throw new NotFoundCategoryException();
       }
-      $product = $this->repository->findProductByCode($code);
+      $product = $this->repository->findProduct($code);
       return $product;
     } catch (NotFoundCategoryException $e) {
       throw new NotFoundCategoryException($e->getMessage());
@@ -90,7 +90,7 @@ class ProductService implements ProductServiceInterface
   public function updateProduct(Product $product): void
   {
     try {
-      if (empty($this->repository->findProductByCode($product->code()))) {
+      if (empty($this->repository->findProduct($product->code()))) {
 
         throw new NotFoundCategoryException();
       }

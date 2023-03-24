@@ -7,8 +7,8 @@ use Desafio\Produto\Modules\Category\Model\Category;
 
 class Product
 {
-  /** @var Category[]  */
-  private $categories = [];
+  /** @var Category*/
+  private ?Category $category;
 
   /**
    * Method Constructor
@@ -62,16 +62,6 @@ class Product
     return $this;
   }
 
-  /**
-   * Get the value of description
-   *
-   * @return  string
-   */
-  public function getDescription()
-  {
-    return $this->description;
-  }
-
 
   /**
    * Get the value of name
@@ -84,26 +74,80 @@ class Product
   }
 
   /**
+   * Undocumented function
+   *
+   * @param string $name
+   * @return self
+   */
+  public function setName(string $name): self
+  {
+    $this->name = $name;
+    return $this;
+  }
+
+  /**
+   * Get the value of description
+   *
+   * @return  string
+   */
+  public function description()
+  {
+    return $this->description;
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @param string $description
+   * @return self
+   */
+  public function setDescription(string $description): self
+  {
+    $this->description = $description;
+    return $this;
+  }
+
+  /**
    * Get the value of sku
    *
    * @return  string
    */
-  public function getSku()
+  public function sku(): string
   {
     return $this->sku;
   }
 
   /**
-   * Adding catgories in array
+   * Get the value of sku
    *
-   * @param integer $code
-   * @param string $name
-   * @return void
+   * @return  string
    */
-  public function addCategories(int $code, string $name): void
+  public function setSku(string $sku): self
   {
-    $category = new Category($code, $name);
-    $this->categories[] = $category;
+    $this->sku = $sku;
+    return $this;
+  }
+
+  /**
+   * Get Category
+   *
+   * @return Category
+   */
+  public function category(): Category
+  {
+    return $this->category;
+  }
+
+  /**
+   * 
+   *
+   * @param Category $categories
+   * @return self
+   */
+  public function setCategory(Category $category): self
+  {
+    $this->category = $category;
+    return $this;
   }
 
 
@@ -112,9 +156,21 @@ class Product
    *
    * @return  float
    */
-  public function getPrice()
+  public function price(): float
   {
     return $this->price;
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @param float $price
+   * @return self
+   */
+  public function setPrice(float $price): self
+  {
+    $this->price = $price;
+    return $this;
   }
 
   /**
@@ -126,7 +182,11 @@ class Product
   {
     return [
       'code' => $this->code,
-      'name' => $this->name
+      'name' => $this->name,
+      'description' => $this->description,
+      'sku' => $this->sku,
+      'price' => $this->price,
+      'category' => $this->category->toArray() ?? [],
     ];
   }
 }
