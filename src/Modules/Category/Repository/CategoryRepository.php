@@ -74,26 +74,6 @@ class CategoryRepository
   }
 
   /**
-   * 
-   *
-   * @param integer $code
-   * @return string
-   */
-  public function findNameCategory(int $code): string
-  {
-    try {
-      $sqlQuery = 'SELECT name FROM categories where code = :code';
-      $statement = $this->connection->prepare($sqlQuery);
-      $statement->bindValue(':code', $code);
-      $statement->execute();
-      $name = $statement->fetch();
-      return $name['name'];
-    } catch (\PDOException   $e) {
-      throw new \PDOException($e->getMessage(), 302);
-    }
-  }
-
-  /**
    *
    * @param integer $code
    * @return array
@@ -105,7 +85,8 @@ class CategoryRepository
       $statement = $this->connection->prepare($sqlQuery);
       $statement->bindValue(':code', $code);
       $statement->execute();
-      return $this->hydrateCategories($statement);
+      $category = $this->hydrateCategories($statement);
+      return $category[0];
     } catch (\PDOException $e) {
       throw new \PDOException($e->getMessage(), 302);
     }

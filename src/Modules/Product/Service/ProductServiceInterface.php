@@ -2,7 +2,6 @@
 
 namespace Desafio\Produto\Modules\Product\Service;
 
-use Desafio\Produto\Modules\Category\Model\Category;
 use Desafio\Produto\Modules\Product\Model\Product;
 
 interface ProductServiceInterface

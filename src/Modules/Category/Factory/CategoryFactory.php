@@ -20,6 +20,7 @@ class CategoryFactory
     $repository = new CategoryRepository($connection);
 
     $result = $repository->findCategoryByCode($code);
+
     return new Category((int)$result['code'], $result['name']);
   }
 }

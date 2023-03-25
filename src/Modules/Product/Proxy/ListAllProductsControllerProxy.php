@@ -1,6 +1,6 @@
 <?php
 
-namespace Desafio\Produto\Modules\Category\Proxy;
+namespace Desafio\Produto\Modules\Product\Proxy;
 
 use Desafio\Produto\Commons\Proxy\Controller\ControllerProxy;
 use Desafio\Produto\Exceptions\InvalidMethodException;

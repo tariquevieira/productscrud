@@ -2,7 +2,6 @@
 
 namespace Desafio\Produto\Modules\Product\Service;
 
-
 use DataBase\Connection\ConnectionCreatorPdo;
 use Desafio\Produto\Exceptions\NotFoundCategoryException;
 use Desafio\Produto\Modules\Product\Model\Product;
@@ -54,10 +53,11 @@ class ProductService implements ProductServiceInterface
   public function findProduct(int $code): Product
   {
     try {
-      if (empty($this->repository->findProduct($code))) {
+      $product = $this->repository->findProduct($code);
+
+      if (empty($product)) {
         throw new NotFoundCategoryException();
       }
-      $product = $this->repository->findProduct($code);
       return $product;
     } catch (NotFoundCategoryException $e) {
       throw new NotFoundCategoryException($e->getMessage());
@@ -91,8 +91,7 @@ class ProductService implements ProductServiceInterface
   {
     try {
       if (empty($this->repository->findProduct($product->code()))) {
-
-        throw new NotFoundCategoryException();
+        throw new NotFoundCategoryException('Produto não encontrado');
       }
       $this->repository->updateProduct($product);
       return;

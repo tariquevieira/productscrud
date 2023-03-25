@@ -3,11 +3,10 @@
 namespace Desafio\Produto\Modules\Product\Model;
 
 use Desafio\Produto\Modules\Category\Model\Category;
+use JsonSerializable;
 
-
-class Product
+class Product  implements JsonSerializable
 {
-  /** @var Category*/
   private ?Category $category;
 
   /**
@@ -17,7 +16,7 @@ class Product
    * @param string $name
    * @param string $sku
    * @param string $description
-   * @param float $price
+   * @param string $price
    * @param integer $amount
    */
   public function __construct(
@@ -25,7 +24,7 @@ class Product
     private string $name,
     private string $sku,
     private string $description,
-    private float $price,
+    private string $price,
     private int $amount
   ) {
   }
@@ -154,9 +153,9 @@ class Product
   /**
    * Get the value of price
    *
-   * @return  float
+   * @return  string
    */
-  public function price(): float
+  public function price(): string
   {
     return $this->price;
   }
@@ -164,12 +163,33 @@ class Product
   /**
    * Undocumented function
    *
-   * @param float $price
+   * @param string $price
    * @return self
    */
-  public function setPrice(float $price): self
+  public function setPrice(string $price): self
   {
     $this->price = $price;
+    return $this;
+  }
+  /**
+   * Undocumented function
+   *
+   * @return integer
+   */
+  public function amount(): int
+  {
+    return $this->amount;
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @param integer $amount
+   * @return self
+   */
+  public function setAmount(int $amount): self
+  {
+    $this->amount = $amount;
     return $this;
   }
 
@@ -186,7 +206,18 @@ class Product
       'description' => $this->description,
       'sku' => $this->sku,
       'price' => $this->price,
+      'amount' => $this->amount,
       'category' => $this->category->toArray() ?? [],
     ];
+  }
+
+  /**
+   * Json convert
+   *
+   * @return mixed
+   */
+  public function jsonSerialize()
+  {
+    return get_object_vars($this);
   }
 }

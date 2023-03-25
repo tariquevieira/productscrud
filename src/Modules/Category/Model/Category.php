@@ -2,11 +2,19 @@
 
 namespace Desafio\Produto\Modules\Category\Model;
 
-class Category
+use JsonSerializable;
+
+class Category  implements JsonSerializable
 {
+  /**
+   * Undocumented function
+   *
+   * @param integer|null $code
+   * @param string|null $name
+   */
   public function __construct(
     private ?int $code,
-    private string $name
+    private ?string $name
   ) {
   }
 
@@ -62,5 +70,15 @@ class Category
       'code' => $this->code,
       'name' => $this->name
     ];
+  }
+
+  /**
+   * Json convert
+   *
+   * @return mixed
+   */
+  public function jsonSerialize()
+  {
+    return get_object_vars($this);
   }
 }

@@ -3,14 +3,12 @@
 namespace Desafio\Produto\Modules\Product\Repository;
 
 use Desafio\Produto\Modules\Category\Factory\CategoryFactory;
-use Desafio\Produto\Modules\Category\Repository\CategoryRepository;
 use Desafio\Produto\Modules\Product\Model\Product;
 use PDO;
 use PDOException;
 
 class ProductRepository
 {
-
   /**
    *
    * @param PDO $connection
@@ -19,7 +17,6 @@ class ProductRepository
     private PDO $connection
   ) {
   }
-
 
   /**
    * List all products
@@ -50,6 +47,7 @@ class ProductRepository
       $statement->bindValue(':code', $code);
       $statement->execute();
       $product = $this->hydrateProducts($statement);
+
       return $product[0];
     } catch (\PDOException $e) {
       throw new \PDOException($e->getMessage(), 302);
@@ -62,22 +60,27 @@ class ProductRepository
    * @param Product $category
    * @return Product
    */
-  public function saveProduct(Product $category): Product
+  public function saveProduct(Product $product): Product
   {
     try {
-
-      $insertQuery = 'INSERT INTO products (name) VALUES (:name);';
+      $insertQuery = 'INSERT INTO products (name,description,sku,price,category_code,amount)
+         VALUES (:name,:description,:sku,:price,:category_code,:amount)';
       $statement = $this->connection->prepare($insertQuery);
 
       $success = $statement->execute([
-        ':name' => $category->name()
+        ':name' => $product->name(),
+        ':description' => $product->description(),
+        ':price' => $product->price(),
+        ':sku' => $product->sku(),
+        ':category_code' => $product->category()->code(),
+        ':amount' => $product->amount(),
       ]);
 
       if ($success) {
-        $category->setCode($this->connection->lastInsertId());
+        $product->setCode($this->connection->lastInsertId());
       }
 
-      return $category;
+      return $product;
     } catch (\PDOException $e) {
       throw new \PDOException($e->getMessage(), 301);
     }
@@ -98,7 +101,8 @@ class ProductRepository
           description = :description,
           sku = :sku,
           price = :price,
-          category = :category
+          category_code = :category_code,
+          amount = :amount
         where 
           code = :code';
 
@@ -107,8 +111,10 @@ class ProductRepository
       $statement->bindValue(':name', $product->name());
       $statement->bindValue(':description', $product->description());
       $statement->bindValue(':sku', $product->sku());
+      $statement->bindValue(':price', $product->price());
       $category = $product->category();
-      $statement->bindValue(':category', $category->code() ?? null);
+      $statement->bindValue(':category_code', $category->code());
+      $statement->bindValue(':amount', $product->amount());
       $success = $statement->execute();
 
       if (!$success) throw new \PDOException("Não foi possivel deletar o exame:" . $category->code() . ".");
@@ -131,23 +137,22 @@ class ProductRepository
     $productList = [];
 
     foreach ($productDataList as $productData) {
-
       $product = new Product(
         code: $productData['code'],
         name: $productData['name'],
         sku: $productData['sku'],
         description: $productData['description'],
         price: $productData['price'],
-        amount: $productData['amount']
+        amount: (int)$productData['amount']
       );
 
-      if (!empty($productData['category'])) {
+      if (!empty($productData['category_code'])) {
         $categoryFactory = new CategoryFactory();
-        $category = $categoryFactory->createByCode($product->code());
+        $category = $categoryFactory->createByCode((int)$productData['category_code']);
         $product->setCategory($category);
       }
 
-      $productList[] = $product->toArray();
+      $productList[] = $product;
     }
 
     return $productList;
