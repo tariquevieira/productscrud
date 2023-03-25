@@ -55,9 +55,6 @@ class ProductService implements ProductServiceInterface
     try {
       $product = $this->repository->findProduct($code);
 
-      if (empty($product)) {
-        throw new NotFoundCategoryException();
-      }
       return $product;
     } catch (NotFoundCategoryException $e) {
       throw new NotFoundCategoryException($e->getMessage());

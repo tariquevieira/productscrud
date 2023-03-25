@@ -2,6 +2,7 @@
 
 namespace Desafio\Produto\Modules\Product\Repository;
 
+use Desafio\Produto\Exceptions\NotFoundCategoryException;
 use Desafio\Produto\Modules\Category\Factory\CategoryFactory;
 use Desafio\Produto\Modules\Product\Model\Product;
 use PDO;
@@ -48,7 +49,15 @@ class ProductRepository
       $statement->execute();
       $product = $this->hydrateProducts($statement);
 
+      if (empty($product)) {
+        throw new NotFoundCategoryException(
+          getenv('MSG_PRODUCT_NOTFOUND')
+        );
+      }
+
       return $product[0];
+    } catch (NotFoundCategoryException $e) {
+      throw new NotFoundCategoryException($e->getMessage());
     } catch (\PDOException $e) {
       throw new \PDOException($e->getMessage(), 302);
     }
