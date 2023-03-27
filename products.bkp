@@ -1,0 +1,205 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.14 (Ubuntu 12.14-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.14 (Ubuntu 12.14-0ubuntu0.20.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: tarique
+--
+
+CREATE TABLE public.categories (
+    code bigint NOT NULL,
+    name character varying(30) NOT NULL
+);
+
+
+ALTER TABLE public.categories OWNER TO tarique;
+
+--
+-- Name: categories_code_seq; Type: SEQUENCE; Schema: public; Owner: tarique
+--
+
+CREATE SEQUENCE public.categories_code_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_code_seq OWNER TO tarique;
+
+--
+-- Name: categories_code_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tarique
+--
+
+ALTER SEQUENCE public.categories_code_seq OWNED BY public.categories.code;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: tarique
+--
+
+CREATE TABLE public.products (
+    code bigint NOT NULL,
+    name character varying(80) NOT NULL,
+    description character varying(100),
+    sku character varying(80),
+    price money NOT NULL,
+    category_code bigint NOT NULL,
+    amount integer
+);
+
+
+ALTER TABLE public.products OWNER TO tarique;
+
+--
+-- Name: products_category_code_seq; Type: SEQUENCE; Schema: public; Owner: tarique
+--
+
+CREATE SEQUENCE public.products_category_code_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_category_code_seq OWNER TO tarique;
+
+--
+-- Name: products_category_code_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tarique
+--
+
+ALTER SEQUENCE public.products_category_code_seq OWNED BY public.products.category_code;
+
+
+--
+-- Name: products_code_seq; Type: SEQUENCE; Schema: public; Owner: tarique
+--
+
+CREATE SEQUENCE public.products_code_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_code_seq OWNER TO tarique;
+
+--
+-- Name: products_code_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tarique
+--
+
+ALTER SEQUENCE public.products_code_seq OWNED BY public.products.code;
+
+
+--
+-- Name: categories code; Type: DEFAULT; Schema: public; Owner: tarique
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN code SET DEFAULT nextval('public.categories_code_seq'::regclass);
+
+
+--
+-- Name: products code; Type: DEFAULT; Schema: public; Owner: tarique
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN code SET DEFAULT nextval('public.products_code_seq'::regclass);
+
+
+--
+-- Name: products category_code; Type: DEFAULT; Schema: public; Owner: tarique
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN category_code SET DEFAULT nextval('public.products_category_code_seq'::regclass);
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: tarique
+--
+
+COPY public.categories (code, name) FROM stdin;
+1	eltronicos
+2	carros
+5	carros
+\.
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: tarique
+--
+
+COPY public.products (code, name, description, sku, price, category_code, amount) FROM stdin;
+3		celular caro	samsung-galaxy-s10	R$ 1.203.412,00	1	10
+5	samsung galayx s13	celular caro	samsung-galaxy-s10	R$ 1.203.412,00	1	10
+\.
+
+
+--
+-- Name: categories_code_seq; Type: SEQUENCE SET; Schema: public; Owner: tarique
+--
+
+SELECT pg_catalog.setval('public.categories_code_seq', 5, true);
+
+
+--
+-- Name: products_category_code_seq; Type: SEQUENCE SET; Schema: public; Owner: tarique
+--
+
+SELECT pg_catalog.setval('public.products_category_code_seq', 1, false);
+
+
+--
+-- Name: products_code_seq; Type: SEQUENCE SET; Schema: public; Owner: tarique
+--
+
+SELECT pg_catalog.setval('public.products_code_seq', 5, true);
+
+
+--
+-- Name: categories pk_code_category; Type: CONSTRAINT; Schema: public; Owner: tarique
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT pk_code_category PRIMARY KEY (code);
+
+
+--
+-- Name: products pk_code_produc; Type: CONSTRAINT; Schema: public; Owner: tarique
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT pk_code_produc PRIMARY KEY (code);
+
+
+--
+-- Name: products fk_category; Type: FK CONSTRAINT; Schema: public; Owner: tarique
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT fk_category FOREIGN KEY (category_code) REFERENCES public.categories(code);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
