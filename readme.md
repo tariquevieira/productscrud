@@ -1,4 +1,4 @@
-# Sistema de Controle de produtos
+# Sistema venda de produtos
 Esse é o banckend de sistema de produtos e categorias(tipos de produtos) em bancos SQL
 
 ## Overview do Código
@@ -18,6 +18,7 @@ Para executar o programaserá necessário rodar:
 
 Toda configuração acesso ao banco de dados deverá ser feito pelo arquivo .env na raíz do projeto.
 - A variável de DB_SERVER deve informar qual modulo do banco de dados. Por exemplo: *pgsql* para postgres.
+- O backup do banco de dados esta na raíz do projeto com extensão .bkp
 
 ### Variáveis de rotas
 As rotas de find, update e delete necessitam passar variavel code na url, como por exemplo:
@@ -55,3 +56,6 @@ Arquivo de configuração .env.example contém todas variáveis de ambientes que
 - DB_USER: nome do usuário.
 - DB_PASSWORD: senha do ususário.
 - MSG_PRODUCT_NOTFOUND="Produto não encontrado": mensagem a ser exibida caso produto não seja encontrado.
+
+#### Desenvolvido por:
+- Tarique Vieira Ramos
